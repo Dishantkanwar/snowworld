@@ -1,0 +1,125 @@
+<?php
+   require('../inc/db_config.php');
+   require('../inc/essenstial.php');
+   adminLogin();
+
+   if(isset($_POST['get_user'])){
+      $res = selectAll('testing');
+      $i =1;
+      $path = USER_IMG_PATH;
+
+      $data= "";
+      while($row = mysqli_fetch_assoc($res))
+      {
+        $del_btn= "<button type='button' onclick='remove_user($row[id])' class='btn  text-white bg-danger'>
+         <i class='fa-solid fa-trash'></i>
+         </button>";
+         if($row['status']==1){
+            $status = "<button onclick='toggle_status($row[id],0)' class='btn btn-warning shodow-none'>active</button>";
+         }
+         else{
+            $status ="<button onclick='toggle_status($row[id],1)' class='btn btn-danger shodow-none'>inactive</button>";
+         }
+
+         $date = date("d-m-y",strtotime($row['datentime']));
+         $data="
+               <tr>
+                  <td>$i</td>
+                  <td>
+                     <img src='$path$row[profile]' width='55px'>
+                     <br>
+                     $row[name]
+                  </td>
+                  <td>$row[email]</td>
+                  <td>$row[phonenum]</td>
+                  <td>$row[address] | $row[pincode]</td> 
+                  <td>$row[dob]</td>
+                  <td>$status</td>
+                  <td>$date</td>
+                  <td>$del_btn</td>
+
+               </tr>
+         ";
+         $i++;
+      }
+      echo $data;
+
+   }
+  
+   if(isset($_POST['toggle_status']))
+   {
+      $frm_data = filteration($_POST);
+
+      $q = "UPDATE `testing` SET `status`=? WHERE `id`=?";
+      $v = [$frm_data['value'],$frm_data['toggle_status']];
+
+      if(update($q,$v,'ii')){
+         echo 1;
+      }
+      else {
+         echo 0;
+      } 
+
+   }
+    
+   if(isset($_POST['remove_user']))
+   {
+      $frm_data = filteration($_POST);
+
+      $res =  delete("DELETE FROM `testing` WHERE `id`=? AND `status`=?",[$frm_data['user_id'],0],'ii');
+
+      if($res){
+         echo 1;
+      }
+      else{
+         echo 0;
+      }
+
+   }
+
+
+   if(isset($_POST['search_user'])){
+      $frm_data =filteration($_POST);
+      $query ="SELECT * FROM `testing` WHERE `name` LIKE ?";
+      $res = select($query ,["%$frm_data[name]%"],'s');
+      $i =1;
+      $path = USER_IMG_PATH;
+
+      $data= "";
+      while($row = mysqli_fetch_assoc($res))
+      {
+        $del_btn= "<button type='button' onclick='remove_user($row[id])' class='btn  text-white bg-danger'>
+         <i class='fa-solid fa-trash'></i>
+         </button>";
+         if($row['status']==1){
+            $status = "<button onclick='toggle_status($row[id],0)' class='btn btn-warning shodow-none'>active</button>";
+         }
+         else{
+            $status ="<button onclick='toggle_status($row[id],1)' class='btn btn-danger shodow-none'>inactive</button>";
+         }
+
+         $date = date("d-m-y",strtotime($row['datentime']));
+         $data="
+               <tr>
+                  <td>$i</td>
+                  <td>
+                     <img src='$path$row[profile]' width='55px'>
+                     <br>
+                     $row[name]
+                  </td>
+                  <td>$row[email]</td>
+                  <td>$row[phonenum]</td>
+                  <td>$row[address] | $row[pincode]</td> 
+                  <td>$row[dob]</td>
+                  <td>$status</td>
+                  <td>$date</td>
+                  <td>$del_btn</td>
+
+               </tr>
+         ";
+         $i++;
+      }
+      echo $data;
+
+   }
+?>
