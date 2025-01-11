@@ -1,1 +1,160 @@
 
+
+<nav  id="nav_bar" class="navbar navbar-expand-lg sticky-top">
+  <div class="container-fluid w-100">
+  <a class="navbar-brand me-4" href="home.php"><img class="logo-brand" src="image/logo/logo1.png"></img></a>
+    <button class="navbar-toggler shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+   <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item me-2">
+          <a class="nav-link fw-bold "  href="index.php">Home</a>
+        </li>
+        <li class="nav-item me-2">
+        <a class="nav-link fw-bold "  href="packages.php">Packages</a>
+        </li>
+        <li class="nav-item me-2">
+          <a class="nav-link fw-bold" href="about.php">Aboust us</a>
+        </li>
+        <li class="nav-item me-2">
+          <a class="nav-link fw-bold" href="contact.php"> Contact </a>
+        </li>
+        <li class="nav-item me-2">
+          <a class="nav-link fw-bold" href="facilities.php">Facilities</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link fw-bold" href="room.php">Booking</a>
+        </li>
+      </ul>
+    <div class="d-flex " >
+      <?php
+        if(isset($_SESSION['login']) && $_SESSION['login']==true)
+        {
+          $path= USER_IMG_PATH;
+          echo<<<data
+              <div class="btn-group">
+                <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <img src="$path$_SESSION[uPic]" style="width:25px; height:25px;" class="me-1">
+                  $_SESSION[uName]
+                </button>
+                <ul class="dropdown-menu dropdown-menu-lg-end">
+                    <li><a class="dropdown-item" href="room.php">Book</a><li>
+                    <li><a class="dropdown-item" href="out.php">Logout</a><li>
+              </div>
+          data;
+        }
+        else 
+        {
+          echo<<<data
+                <button type="submit" class="btn btn-outline-white bg-dark text-white shadow-none me-lg-3 me-2"  data-bs-toggle="modal" data-bs-target="#loginmoodel">login</button>
+                <button type="submit" class="btn btn-outline-white  bg-dark text-white shadow-none "  data-bs-toggle="modal" data-bs-target="#signupmoodel">Register</button>
+          data;
+          
+        }
+      ?>
+        
+    </div>
+
+    </div>
+  </div>
+</nav>
+
+<!-- login -->
+<div class="modal fade" id="loginmoodel" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form  id="login-form" >
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" ><i class="fa-solid fa-user"></i> &nbsp;User login</h1>
+        <button type="reset" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+             <div class="mb-3">
+                 <label for="exampleInputEmail1" class="form-label">Email / Mobile</label>
+                  <input  type="text" name="email_mob" class="form-control"  required>
+                <div class="form-text">We'll never share your email with anyone else.</div>
+               </div>
+               <div class="mb-3">
+                        <label class="form-label">Password</label>
+                        <input type="password" name="pass" class="form-control" required>
+                </div>
+                <div>
+                  <button type="submit" class ="btn btn-dark">Login</button>&nbsp;
+                  <a href="javascript: void(0)">Forget Password</a>
+                </div>
+      </div>
+      </form>
+      
+    </div>
+  </div>
+</div>
+
+<!-- #signupmoodel -->
+<div class="modal fade" id="signupmoodel" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <form id="register-form">
+                <div class="modal-header">
+                  <h1 class="modal-title fs-5"><i class="fa-solid fa-user"></i> &nbsp;Registe Here</h1>
+                  <button type="reset" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <span class="badge rounded-pill bg-light text-dark mb-3 text-wrap lh-base">
+                  Note: You must Bring your ID Proof When you Check in the Hotel (Aadhar card, passport, driving etc) .
+                  </span>   
+                          <br>
+                          <div class="container-fluid">
+                            <div class="row">
+                                      <div class="col-md-6 ps-0 mb-3">
+                                        <label  class="form-label">Name</label>
+                                        <input name="name" type="text" class="form-control" required >
+                                      </div>
+                                      <div class="col-md-6 ps-0 mb-3">
+                                        <label  class="form-label">email</label>
+                                        <input name="email" type="email" class="form-control" required >
+                                      </div>
+                                      <div class="col-md-6 ps-0 mb-3">
+                                        <label  class="form-label">phonenum</label>
+                                        <input name="phonenum" type="number" class="form-control" required >
+                                      </div>
+                                      <div class="col-md-6 ps-0 mb-3">
+                                        <label  class="form-label">picture</label>
+                                        <input name="profile" type="file" class="form-control" required >
+                                      </div>
+                                      <div class="col-md-12 ps-0 mb-3">
+                                        <label  class="form-label">Addrees</label>
+                                        <textarea name="address" rows="1"></textarea>
+                                      </div>
+                                      <div class="col-md-6 ps-0 mb-3">
+                                        <label  class="form-label">Pincode</label>
+                                        <input name="pincode" type="number" class="form-control" required >
+                                      </div>
+                                      <div class="col-md-6 ps-0 mb-3">
+                                        <label  class="form-label">D-O-B</label>
+                                        <input name="dob" type="date" class="form-control"required  >
+                                      </div>
+                                      <div class="col-md-6 ps-0 mb-3">
+                                                <label class="form-label">Password</label>
+                                                <input name="pass" type="password" class="form-control"required >
+                                        </div>
+                                        <div class="col-md-6 ps-0 mb-3">
+                                        <label  class="form-label">Conform Password</label>
+                                        <input name="cpass" type="password" class="form-control"required  >
+                                      </div>
+                                        <div class="text-end">
+                                          <button type="submit"  class ="btn btn-dark">Submit</button>&nbsp;
+                                        </div>
+
+                            </div>
+                          </div>
+                  
+                          
+                </div>
+      </form>
+    
+    
+      
+    </div>
+  </div>
+</div>
